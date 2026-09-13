@@ -61,7 +61,7 @@
     document.querySelector('#progressText').textContent=`第 ${state.index+1}/${total} 題・已作答 ${answered}`;
     document.querySelector('#progressBar').style.width=`${((state.index+1)/total)*100}%`;
     const card=document.querySelector('#questionCard');
-    card.innerHTML=`<div class="q-no">第 ${state.index+1} 題｜原題庫 ${esc(q.sourceNo)}</div><div class="q-title">${esc(q.stem)}</div><div class="options">${q.options.map((o,i)=>`<button class="option ${state.answers[q.id]===i?'selected':''}" data-i="${i}"><span class="option-letter">${letters[i]}.</span>${esc(o)}</button>`).join('')}</div>`;
+    card.innerHTML=`<div class="q-no">第 ${state.index+1} 題</div><div class="q-title">${esc(q.stem)}</div><div class="options">${q.options.map((o,i)=>`<button class="option ${state.answers[q.id]===i?'selected':''}" data-i="${i}"><span class="option-letter">${letters[i]}.</span>${esc(o)}</button>`).join('')}</div>`;
     card.querySelectorAll('.option').forEach(btn=>btn.onclick=()=>{
       state.answers[q.id]=Number(btn.dataset.i); save(); renderQuestion();
     });
@@ -101,7 +101,7 @@
     const yours=a===null?'未作答':`${letters[a]}. ${esc(q.options[a])}`;
     const right=`${letters[q.answerIndex]}. ${esc(q.options[q.answerIndex])}`;
     const laws=(q.legalBasis||[]).map(x=>x.url?`<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.law)} ${esc(x.article)}</a>`:`<span>${esc(x.law)} ${esc(x.article)}</span>`).join('');
-    return `<article class="wrong-card"><div class="q-no">錯題 ${n}｜原題庫 ${esc(q.sourceNo)}</div><h3>${esc(q.stem)}</h3><div class="answer-line bad"><b>你的答案：</b>${yours}</div><div class="answer-line good"><b>正確答案：</b>${right}</div><div class="explain"><b>解析：</b>${esc(q.explanation)}</div>${q.note?`<div class="note">${esc(q.note)}</div>`:''}<div class="law-links">${laws}</div></article>`;
+    return `<article class="wrong-card"><div class="q-no">錯題 ${n}</div><h3>${esc(q.stem)}</h3><div class="answer-line bad"><b>你的答案：</b>${yours}</div><div class="answer-line good"><b>正確答案：</b>${right}</div><div class="explain"><b>解析：</b>${esc(q.explanation)}</div>${q.note?`<div class="note">${esc(q.note)}</div>`:''}<div class="law-links">${laws}</div></article>`;
   }
 
   function showBank(filter='all'){
@@ -115,7 +115,7 @@
     document.querySelector('#bankList').innerHTML=rows.map(q=>{
       const status=q.active&&Number.isInteger(q.answerIndex)?'<span class="badge good">已核對可出題</span>':'<span class="badge warn">排除正式出題</span>';
       const ans=Number.isInteger(q.answerIndex)?`${letters[q.answerIndex]}. ${esc(q.options[q.answerIndex])}`:'—';
-      return `<article class="bank-card"><div class="bank-meta">${status}<span class="badge">原題 ${esc(q.sourceNo)}</span></div><h3>${esc(q.stem)}</h3><div class="muted">正確答案：${ans}</div>${q.note?`<div class="note">${esc(q.note)}</div>`:''}</article>`;
+      return `<article class="bank-card"><div class="bank-meta">${status}</div><h3>${esc(q.stem)}</h3><div class="muted">正確答案：${ans}</div>${q.note?`<div class="note">${esc(q.note)}</div>`:''}</article>`;
     }).join('');
   }
 
