@@ -20,11 +20,11 @@
   function showStart(){
     clearInterval(timerId); state=null; app.innerHTML=''; app.append(cloneTpl('#startTpl'));
     const active = activeBank().length, archived = archivedBank().length;
-    document.querySelector('#verifiedCount').textContent = `現行法規已核對 ${active} 題`;
+    document.querySelector('#verifiedCount').textContent = `已核對可出題 ${active} 題`;
     document.querySelector('#archivedCount').textContent = `已排除／待修正 ${archived} 題`;
     const notice=document.querySelector('#devNotice');
     if(active < 100){
-      notice.innerHTML=`目前是建置中的可操作版本：已完成 <b>${active}</b> 題現行法規核對，因此暫時會抽出全部已核對題目。完整題庫達 100 題以上後，會自動改成每次隨機抽 100 題。`;
+      notice.innerHTML=`目前是建置中的可操作版本：已完成 <b>${active}</b> 題答案核對；法規題均逐題對照現行法規。題庫未滿 100 題時會抽出全部已核對題目，達 100 題以上後自動改成每次隨機抽 100 題。`;
     } else notice.remove();
     document.querySelector('#startBtn').onclick=startExam;
   }
@@ -100,7 +100,7 @@
   function wrongHtml(q,a,n){
     const yours=a===null?'未作答':`${letters[a]}. ${esc(q.options[a])}`;
     const right=`${letters[q.answerIndex]}. ${esc(q.options[q.answerIndex])}`;
-    const laws=(q.legalBasis||[]).map(x=>`<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.law)} ${esc(x.article)}</a>`).join('');
+    const laws=(q.legalBasis||[]).map(x=>x.url?`<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.law)} ${esc(x.article)}</a>`:`<span>${esc(x.law)} ${esc(x.article)}</span>`).join('');
     return `<article class="wrong-card"><div class="q-no">錯題 ${n}｜原題庫 ${esc(q.sourceNo)}</div><h3>${esc(q.stem)}</h3><div class="answer-line bad"><b>你的答案：</b>${yours}</div><div class="answer-line good"><b>正確答案：</b>${right}</div><div class="explain"><b>解析：</b>${esc(q.explanation)}</div>${q.note?`<div class="note">${esc(q.note)}</div>`:''}<div class="law-links">${laws}</div></article>`;
   }
 
@@ -113,7 +113,7 @@
     if(filter==='active') rows=activeBank();
     if(filter==='archived') rows=archivedBank();
     document.querySelector('#bankList').innerHTML=rows.map(q=>{
-      const status=q.active&&Number.isInteger(q.answerIndex)?'<span class="badge good">現行法規已核對</span>':'<span class="badge warn">排除正式出題</span>';
+      const status=q.active&&Number.isInteger(q.answerIndex)?'<span class="badge good">已核對可出題</span>':'<span class="badge warn">排除正式出題</span>';
       const ans=Number.isInteger(q.answerIndex)?`${letters[q.answerIndex]}. ${esc(q.options[q.answerIndex])}`:'—';
       return `<article class="bank-card"><div class="bank-meta">${status}<span class="badge">原題 ${esc(q.sourceNo)}</span></div><h3>${esc(q.stem)}</h3><div class="muted">正確答案：${ans}</div>${q.note?`<div class="note">${esc(q.note)}</div>`:''}</article>`;
     }).join('');
