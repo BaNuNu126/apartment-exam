@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#111827" />
+  <title>公寓大廈管理服務人員｜模擬考</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <div class="eyebrow">公寓大廈管理服務人員</div>
+      <h1>模擬考題庫</h1>
+    </div>
+    <button id="bankBtn" class="ghost">題庫</button>
+  </header>
+
+  <main id="app" class="container"></main>
+
+  <template id="startTpl">
+    <section class="card hero">
+      <div class="status-row">
+        <span class="badge good" id="verifiedCount"></span>
+        <span class="badge" id="archivedCount"></span>
+      </div>
+      <h2>60 分鐘模擬考</h2>
+      <p class="muted">正式版每次從「已依現行法規核對」題目中隨機抽 100 題。題目與選項皆為文字，可直接在 iPhone 點選。</p>
+      <div id="devNotice" class="notice"></div>
+      <button id="startBtn" class="primary wide">開始考試</button>
+    </section>
+    <section class="card compact">
+      <h3>交卷後會顯示</h3>
+      <p class="muted">分數、答對／答錯／未作答數量，以及每一題錯題的「你的答案、正確答案、解析、法規依據」。</p>
+    </section>
+  </template>
+
+  <template id="examTpl">
+    <section class="exam-head card compact sticky">
+      <div>
+        <div class="muted tiny">剩餘時間</div>
+        <div id="timer" class="timer">60:00</div>
+      </div>
+      <div class="progress-meta"><span id="progressText"></span></div>
+      <button id="submitBtn" class="danger">交卷</button>
+      <div class="progress"><div id="progressBar"></div></div>
+    </section>
+    <section id="questionCard" class="card question-card"></section>
+    <nav class="exam-nav">
+      <button id="prevBtn" class="ghost">上一題</button>
+      <button id="nextBtn" class="primary">下一題</button>
+    </nav>
+  </template>
+
+  <template id="resultTpl">
+    <section class="card hero result-summary">
+      <div class="muted">本次成績</div>
+      <div id="score" class="score"></div>
+      <div id="stats" class="stats"></div>
+      <button id="retryBtn" class="primary wide">再考一次</button>
+    </section>
+    <section>
+      <h2>答錯與未作答題目</h2>
+      <div id="wrongList" class="stack"></div>
+    </section>
+  </template>
+
+  <template id="bankTpl">
+    <section class="card compact">
+      <div class="bank-head">
+        <div>
+          <h2>題庫檢視</h2>
+          <p class="muted">「現行法規已核對」才會進入正式亂數抽題；題幹已因修法失效者會保留但排除。</p>
+        </div>
+        <button id="backBtn" class="ghost">返回</button>
+      </div>
+      <div class="filters">
+        <button class="chip active" data-filter="all">全部</button>
+        <button class="chip" data-filter="active">可出題</button>
+        <button class="chip" data-filter="archived">已排除</button>
+      </div>
+    </section>
+    <section id="bankList" class="stack"></section>
+  </template>
+
+  <script src="questions.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
